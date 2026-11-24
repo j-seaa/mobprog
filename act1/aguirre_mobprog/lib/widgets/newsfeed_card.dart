@@ -8,7 +8,8 @@ class NewsfeedCard extends StatelessWidget {
   final String postContent;
   final String date;
   final int? numOfLikes;
-  final bool? hasImage;
+  final String? imageUrl;
+  final String? profileImageUrl;
 
   const NewsfeedCard({
     super.key,
@@ -16,11 +17,13 @@ class NewsfeedCard extends StatelessWidget {
     required this.postContent,
     required this.date,
     this.numOfLikes,
-    this.hasImage,
+    this.imageUrl,
+    this.profileImageUrl,
   });
 
   @override
   Widget build(BuildContext context) {
+    final imageUrl = this.imageUrl;
     final screenUtilSp = ScreenUtil().setSp(10);
     final screenUtilWidth = ScreenUtil().setWidth(10);
     final screenUtilFontUserNameSize = ScreenUtil().setSp(15);
@@ -36,7 +39,7 @@ class NewsfeedCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Icon(Icons.person),
+                _buildProfileAvatar(),
                 SizedBox(width: screenUtilWidth),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,47 +80,46 @@ class NewsfeedCard extends StatelessWidget {
               fontSize: ScreenUtil().setSp(12),
               color: Colors.black,
             ), // CustomText
-            SizedBox(height: ScreenUtil().setHeight(5)),
-            hasImage == true
-                ? const Image(image: AssetImage('assets/images/iron_man.jpg'))
-                : SizedBox.shrink(),
+            if (imageUrl != null && imageUrl.trim().isNotEmpty) ...[
+              SizedBox(height: ScreenUtil().setHeight(5)),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(
+                  ScreenUtil().setSp(4),
+                ),
+                child: AspectRatio(
+                  aspectRatio: 16 / 9,
+                  child: Image.network(
+                    imageUrl,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      color: Colors.grey[200],
+                      alignment: Alignment.center,
+                      child: Icon(Icons.image_not_supported, color: Colors.grey),
+                    ),
+                  ),
+                ),
+              ),
+            ],
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TextButton.icon(
-                  onPressed: () {
-                    // print('Like button pressed');
-                  },
+                _FeedActionButton(
                   icon: Icon(Icons.thumb_up, color: fbPrimary),
-                  label: CustomText(
-                    text: numOfLikes.toString(),
-                    fontSize: ScreenUtil().setSp(12),
-                    color: fbDarkPrimary,
-                  ), // CustomText
-                ), // TextButton.icon
-                TextButton.icon(
-                  onPressed: () {},
+                  label: (numOfLikes ?? 0).toString(),
+                ),
+                const _FeedActionButton(
                   icon: Icon(Icons.comment, color: fbDarkPrimary),
-                  label: CustomText(
-                    text: 'Comment',
-                    fontSize: ScreenUtil().setSp(12),
-                    color: fbDarkPrimary,
-                  ), // CustomText
-                ), // TextButton.icon
-                TextButton.icon(
-                  onPressed: () {},
+                  label: 'Comment',
+                ),
+                const _FeedActionButton(
                   icon: Icon(Icons.redo, color: fbDarkPrimary),
-                  label: CustomText(
-                    text: 'Share',
-                    fontSize: ScreenUtil().setSp(12),
-                    color: fbDarkPrimary,
-                  ), // CustomText
-                ), // TextButton.icon
+                  label: 'Share',
+                ),
               ],
             ), // Row
             Row(
               children: [
-                Icon(Icons.person),
+                _buildProfileAvatar(radius: ScreenUtil().setSp(16)),
                 SizedBox(width: ScreenUtil().setWidth(10)),
                 Container(
                   padding: EdgeInsets.fromLTRB(
@@ -154,5 +156,58 @@ class NewsfeedCard extends StatelessWidget {
         ), // Column
       ), // Padding
     ); // Card
+  }
+
+  Widget _buildProfileAvatar({double radius = 20}) {
+    final profileImageUrl = this.profileImageUrl;
+    final initials = userName
+        .split(' ')
+        .where((part) => part.isNotEmpty)
+        .take(2)
+        .map((part) => part[0])
+        .join()
+        .toUpperCase();
+
+    return CircleAvatar(
+      radius: radius,
+      backgroundColor: fbLightPrimary,
+      child: profileImageUrl == null || profileImageUrl.trim().isEmpty
+          ? Text(initials, style: const TextStyle(color: Colors.white))
+          : ClipOval(
+              child: Image.network(
+                profileImageUrl,
+                width: radius * 2,
+                height: radius * 2,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Text(
+                  initials,
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+    );
+  }
+}
+
+class _FeedActionButton extends StatelessWidget {
+  const _FeedActionButton({
+    required this.icon,
+    required this.label,
+  });
+
+  final Widget icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton.icon(
+      onPressed: () {},
+      icon: icon,
+      label: CustomText(
+        text: label,
+        fontSize: ScreenUtil().setSp(12),
+        color: fbDarkPrimary,
+      ),
+    );
   }
 }
