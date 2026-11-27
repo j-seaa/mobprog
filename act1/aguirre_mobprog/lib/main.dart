@@ -19,7 +19,7 @@ class MainApp extends StatelessWidget {
       builder: (_, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: "Facebook Replication",
+          title: "SNAPI",
           initialRoute: "/home",
           routes: {
             "/newsfeed": (context) => const NewsfeedScreen(),

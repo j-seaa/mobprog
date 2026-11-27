@@ -30,6 +30,7 @@ class NewsfeedCard extends StatelessWidget {
     final screenUtilIconSize = ScreenUtil().setSp(15);
 
     return Card(
+      color: appSurfaceColor,
       margin: EdgeInsets.all(screenUtilSp),
       child: Padding(
         padding: EdgeInsets.all(screenUtilSp),
@@ -47,7 +48,7 @@ class NewsfeedCard extends StatelessWidget {
                     CustomText(
                       text: userName,
                       fontSize: screenUtilFontUserNameSize,
-                      color: Colors.black,
+                      color: fbDarkPrimary,
                       fontWeight: FontWeight.bold,
                     ), // CustomText
                     Row(
@@ -57,12 +58,12 @@ class NewsfeedCard extends StatelessWidget {
                         CustomText(
                           text: date,
                           fontSize: ScreenUtil().setSp(12),
-                          color: Colors.grey,
+                          color: fbMutedTextColor,
                         ), // CustomText
                         SizedBox(width: ScreenUtil().setWidth(3)),
                         Icon(
                           Icons.public,
-                          color: Colors.grey,
+                          color: fbMutedTextColor,
                           size: screenUtilIconSize,
                         ), // Icon
                       ],
@@ -78,14 +79,12 @@ class NewsfeedCard extends StatelessWidget {
             CustomText(
               text: postContent,
               fontSize: ScreenUtil().setSp(12),
-              color: Colors.black,
+              color: fbDarkPrimary,
             ), // CustomText
             if (imageUrl != null && imageUrl.trim().isNotEmpty) ...[
               SizedBox(height: ScreenUtil().setHeight(5)),
               ClipRRect(
-                borderRadius: BorderRadius.circular(
-                  ScreenUtil().setSp(4),
-                ),
+                borderRadius: BorderRadius.circular(ScreenUtil().setSp(4)),
                 child: AspectRatio(
                   aspectRatio: 16 / 9,
                   child: Image(
@@ -94,9 +93,12 @@ class NewsfeedCard extends StatelessWidget {
                         : AssetImage(imageUrl),
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) => Container(
-                      color: Colors.grey[200],
+                      color: appBackgroundColor,
                       alignment: Alignment.center,
-                      child: Icon(Icons.image_not_supported, color: Colors.grey),
+                      child: Icon(
+                        Icons.image_not_supported,
+                        color: fbMutedTextColor,
+                      ),
                     ),
                   ),
                 ),
@@ -134,7 +136,7 @@ class NewsfeedCard extends StatelessWidget {
                   height: ScreenUtil().setHeight(25),
                   width: ScreenUtil().setWidth(330),
                   decoration: BoxDecoration(
-                    color: Colors.grey[200],
+                    color: appBackgroundColor,
                     borderRadius: BorderRadius.all(
                       Radius.circular(ScreenUtil().setSp(10)),
                     ), // BorderRadius.all
@@ -142,7 +144,7 @@ class NewsfeedCard extends StatelessWidget {
                   child: CustomText(
                     text: 'Write a comment...',
                     fontSize: ScreenUtil().setSp(11),
-                    color: Colors.grey,
+                    color: fbMutedTextColor,
                   ), // CustomText
                 ), // Container
               ],
@@ -152,7 +154,7 @@ class NewsfeedCard extends StatelessWidget {
               text: 'View all comments',
               fontSize: ScreenUtil().setSp(12),
               fontWeight: FontWeight.bold,
-              color: Colors.black,
+              color: fbDarkPrimary,
             ), // CustomText
           ],
         ), // Column
@@ -174,7 +176,7 @@ class NewsfeedCard extends StatelessWidget {
       radius: radius,
       backgroundColor: fbLightPrimary,
       child: profileImageUrl == null || profileImageUrl.trim().isEmpty
-          ? Text(initials, style: const TextStyle(color: Colors.white))
+          ? Text(initials, style: const TextStyle(color: fbDarkPrimary))
           : ClipOval(
               child: Image(
                 image: profileImageUrl.startsWith('http')
@@ -185,7 +187,7 @@ class NewsfeedCard extends StatelessWidget {
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) => Text(
                   initials,
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: fbDarkPrimary),
                 ),
               ),
             ),
@@ -194,10 +196,7 @@ class NewsfeedCard extends StatelessWidget {
 }
 
 class _FeedActionButton extends StatelessWidget {
-  const _FeedActionButton({
-    required this.icon,
-    required this.label,
-  });
+  const _FeedActionButton({required this.icon, required this.label});
 
   final Widget icon;
   final String label;
