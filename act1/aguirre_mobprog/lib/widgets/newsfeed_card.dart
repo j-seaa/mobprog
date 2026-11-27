@@ -88,8 +88,10 @@ class NewsfeedCard extends StatelessWidget {
                 ),
                 child: AspectRatio(
                   aspectRatio: 16 / 9,
-                  child: Image.network(
-                    imageUrl,
+                  child: Image(
+                    image: imageUrl.startsWith('http')
+                        ? NetworkImage(imageUrl)
+                        : AssetImage(imageUrl),
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) => Container(
                       color: Colors.grey[200],
@@ -174,8 +176,10 @@ class NewsfeedCard extends StatelessWidget {
       child: profileImageUrl == null || profileImageUrl.trim().isEmpty
           ? Text(initials, style: const TextStyle(color: Colors.white))
           : ClipOval(
-              child: Image.network(
-                profileImageUrl,
+              child: Image(
+                image: profileImageUrl.startsWith('http')
+                    ? NetworkImage(profileImageUrl)
+                    : AssetImage(profileImageUrl),
                 width: radius * 2,
                 height: radius * 2,
                 fit: BoxFit.cover,

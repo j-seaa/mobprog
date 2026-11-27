@@ -9,19 +9,19 @@ class NewsfeedScreen extends StatelessWidget {
     return ListView(
       children: const [
         NewsfeedCard(
-          userName: 'J',
-          postContent: 'hello owrld',
-          date: '245 hours ago',
-          numOfLikes: 174,
-          profileImageUrl: 'https://i.pravatar.cc/150?img=12',
+          userName: 'Pompompurin',
+          postContent: 'hello owrld ^-^',
+          date: '45 hours ago',
+          numOfLikes: 10,
+          profileImageUrl: 'assets/images/pompompurin.jpg',
         ), // NewsfeedCard
         NewsfeedCard(
-          userName: 'Tony Stark',
-          postContent: 'I am Iron Man. #GeniusBillionairePhilanthropist',
-          date: 'December 1, 2023',
-          numOfLikes: 3000,
-          profileImageUrl: 'https://i.pravatar.cc/150?img=68',
-          imageUrl: 'https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=1200&q=80',
+          userName: 'Santa Claus',
+          postContent: 'Merry Christmas!',
+          date: 'December 25, 2023',
+          numOfLikes: 80000,
+          profileImageUrl: 'https://images.pexels.com/photos/40895019/pexels-photo-40895019.jpeg',
+          imageUrl: 'assets/images/xmas-village.jpg',
         ), // NewsfeedCard
       ],
     ); // ListView
